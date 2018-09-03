@@ -8,13 +8,17 @@
 import scrapy
 
 
-class FirstspiderItem(scrapy.Item):
+class HouseItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     title = scrapy.Field()
-    housetype = scrapy.Field()
+    house_type = scrapy.Field()
     size = scrapy.Field()
-    decoration = scrapy.Field()
+    rent_style = scrapy.Field()
+    area = scrapy.Field()
+    feature = scrapy.Field()
+    price = scrapy.Field()
+
 
 
 

@@ -1,5 +1,6 @@
 import scrapy
 from scrapy.selector import  Selector
+from firstSpider.items import HouseItem
 
 class firstSpider(scrapy.Spider):
     name = "first"
@@ -28,18 +29,31 @@ class firstSpider(scrapy.Spider):
         houses = response.selector.xpath('//div[contains(@class,"ershoufang-list")]')
         #print(houses)
         for house in houses:
-            yield{
-                'title': house.xpath('dl/dd[contains(@class,"title")]/a/text()').extract(),
-                'price': house.xpath('dl/dd/div[@class="price"]/span[@class="num"]/text()').extract()
-            }
-
-        next_page = response.selector.xpath('//div[@class="pageBox"]/ul/li/a[@class="next"]/@href').extract()[0]
-        print(next_page)
-        base_url = "http://xa.ganji.com"
-        if next_page is not None:
-            nextUrl = base_url + next_page
-            print(nextUrl)
-            yield scrapy.Request(nextUrl,callback=self.parse)
+            # yield{
+            #     'title': house.xpath('dl/dd[contains(@class,"title")]/a/text()').extract()[0],
+            #     'house_tpye':  house.xpath('dl/dd[contains(@class,"size")]/@data-huxing').extract()[0],
+            #     'size':  house.xpath('dl/dd[contains(@class,"size")]/@data-area').extract()[0],
+            #     'rent_style':  house.xpath('dl/dd[contains(@class,"size")]/span[contains(@class,"js-huxing")]/text()').extract()[0],
+            #     'area': house.xpath('dl/dd[contains(@class,"address")]/span/a[@class="address-eara"]/text()').extract(),
+            #     'feature': house.xpath('dl/dd[contains(@class,"feature")]/span/text()').re_first(r'[1-3]号线'),
+            #     'price': house.xpath('dl/dd/div[@class="price"]/span[@class="num"]/text()').extract()[0]
+            # }
+            houseItem =  HouseItem()
+            houseItem['title'] =  house.xpath('dl/dd[contains(@class,"title")]/a/text()').extract()[0]
+            houseItem['house_type'] = house.xpath('dl/dd[contains(@class,"size")]/@data-huxing').extract()[0]
+            houseItem['size'] = house.xpath('dl/dd[contains(@class,"size")]/@data-area').extract()[0]
+            houseItem['rent_style'] = house.xpath('dl/dd[contains(@class,"size")]/span[contains(@class,"js-huxing")]/text()').extract()[0]
+            houseItem['area'] = house.xpath('dl/dd[contains(@class,"address")]/span/a[@class="address-eara"]/text()').extract()
+            houseItem['feature'] = house.xpath('dl/dd[contains(@class,"feature")]/span/text()').re_first(r'[1-3]号线')
+            houseItem['price'] = house.xpath('dl/dd/div[@class="price"]/span[@class="num"]/text()').extract()[0]
+            yield  houseItem
+        # next_page = response.selector.xpath('//div[@class="pageBox"]/ul/li/a[@class="next"]/@href').extract()[0]
+        # print(next_page)
+        # base_url = "http://xa.ganji.com"
+        # if next_page is not None:
+        #     nextUrl = base_url + next_page
+        #     print(nextUrl)
+        #     yield scrapy.Request(nextUrl,callback=self.parse)
 
 
 
