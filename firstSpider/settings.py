@@ -65,7 +65,8 @@ DOWNLOAD_DELAY = 5
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'firstSpider.pipelines.FirstspiderPipeline': 300,
+   #'firstSpider.pipelines.FirstspiderPipeline': 300,
+    'firstSpider.pipelines.HousePipeline':300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -91,3 +92,8 @@ ITEM_PIPELINES = {
 
 # FEED_URI = '456.json'
 # FEED_FORMAT = 'jsonlines'
+
+MYSQL_HOST='localhost'
+MYSQL_DBNAME='housedata'
+MYSQL_USER='root'
+MYSQL_PASSWORD='123456'
